@@ -1,20 +1,32 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "../src/components/pages/Home";
-import View from "../src/components/product/View";
-import Update from "../src/components/product/Update";
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
+import Header from '../src/components/Header';
+import AddProduct from '../src/components/AddProduct';
+import ProductList from '../src/components/ProductList';
+import useLocalStorage from '../src/hooks/useLocalStorage';
+import EditProduct from '../src/components/EditProduct';
+import ProductsContext from '../src/context/ProductsContext';
 
-function App() {
+const App = () => {
+  const [products, setProduct] = useLocalStorage('products', []);
+
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route  path="/" element={<Home/>} />
-          <Route exact path="/view/:id" element={<View/>} />
-          <Route exact path="/update/:id" element={<Update/>} />
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <div>
+        <Header />
+        <div className="main-content">
+          <ProductsContext.Provider value={{ products, setProduct }}>
+            <Routes>
+              <Route element={<ProductList />} path="/" exact={true} />
+              <Route element={<AddProduct />} path="/add" />
+              <Route element={<EditProduct />} path="/edit/:id" />
+              <Route element={() => <Navigate replace="/" />} />
+            </Routes>
+          </ProductsContext.Provider>
+        </div>
+      </div>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
