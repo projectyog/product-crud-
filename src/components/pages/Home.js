@@ -17,7 +17,7 @@ const useStyles = makeStyles({
  },
  addform:{
    fontSize: "2",
-   color: "red",
+   color: "black",
    width: "40",
    marginTop: "1",
  }
